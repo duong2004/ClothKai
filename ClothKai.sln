@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClothKai.Web", "ClothKai.Web\ClothKai.Web.csproj", "{619481C6-CC56-45FA-A3F1-6836ABD4DD54}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClothKai.Entities", "ClothKai.Entities\ClothKai.Entities.csproj", "{14D4C82C-D26C-4D07-96F7-4DA6393AE1A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClothKai.Database", "ClothKai.Database\ClothKai.Database.csproj", "{DFFEA3F1-E226-4BBC-BBD2-497FB994D47E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{619481C6-CC56-45FA-A3F1-6836ABD4DD54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{619481C6-CC56-45FA-A3F1-6836ABD4DD54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{619481C6-CC56-45FA-A3F1-6836ABD4DD54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14D4C82C-D26C-4D07-96F7-4DA6393AE1A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14D4C82C-D26C-4D07-96F7-4DA6393AE1A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14D4C82C-D26C-4D07-96F7-4DA6393AE1A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14D4C82C-D26C-4D07-96F7-4DA6393AE1A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFFEA3F1-E226-4BBC-BBD2-497FB994D47E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFFEA3F1-E226-4BBC-BBD2-497FB994D47E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFFEA3F1-E226-4BBC-BBD2-497FB994D47E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFFEA3F1-E226-4BBC-BBD2-497FB994D47E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
