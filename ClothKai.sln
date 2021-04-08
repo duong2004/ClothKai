@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClothKai.Entities", "ClothK
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClothKai.Database", "ClothKai.Database\ClothKai.Database.csproj", "{DFFEA3F1-E226-4BBC-BBD2-497FB994D47E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClothKai.Services", "ClothKai.Services\ClothKai.Services.csproj", "{46C9EEB1-8501-4888-BB33-E77C72D2A4A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{DFFEA3F1-E226-4BBC-BBD2-497FB994D47E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFFEA3F1-E226-4BBC-BBD2-497FB994D47E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFFEA3F1-E226-4BBC-BBD2-497FB994D47E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46C9EEB1-8501-4888-BB33-E77C72D2A4A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46C9EEB1-8501-4888-BB33-E77C72D2A4A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46C9EEB1-8501-4888-BB33-E77C72D2A4A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46C9EEB1-8501-4888-BB33-E77C72D2A4A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
