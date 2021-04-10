@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ClothKai.Services;
+using ClothKai.Web.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +10,12 @@ namespace ClothKai.Web.Controllers
 {
     public class HomeController : Controller
     {
+        CategoryService categoryService = new CategoryService();
         public ActionResult Index()
         {
-            return View();
+            HomeViewModels model = new HomeViewModels();
+            model.categories = categoryService.GetCategory();
+            return View(model);
         }
 
         public ActionResult About()

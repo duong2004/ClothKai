@@ -34,14 +34,57 @@
         }
     </tbody>
 </table>
-@section Scripts{
-    <script type="text/javascript">
-        $('#btnSearch').click(function () {
-            var s = $('#s').val();
+<script type="text/javascript">
+    $('#btnSearch').click(function () {
+        var s = $('#s').val();
+        $.ajax({
+            url: "/Product/TableProduct",
+            data: {
+                s: s
+            }
+        })
+            .done(function (response) {
+                $('#tableContainer').html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error");
+            });
+    });
+    $('#btnNew').click(function () {
+        $.ajax({
+            type: "GET",
+            url: "/Product/Create"
+        })
+            .done(function (response) {
+                $('#actionContainer').html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error");
+            });
+    });
+    $(".btnEdit").click(function () {
+        $.ajax({
+            type: "GET",
+            url: "/Product/Edit",
+            data: {
+                ID: $(this).attr("data-id")
+            }
+        })
+            .done(function (response) {
+                $('#actionContainer').html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error");
+            });
+    });
+    $(".btnDelete").click(function () {
+        var confirmDelete = confirm("Are you sure delete product !! ");
+        if (confirmDelete) {
             $.ajax({
-                url: "/Product/TableProduct",
+                type: "POST",
+                url: "/Product/Delete",
                 data: {
-                    s: s
+                    ID: $(this).attr("data-id")
                 }
             })
                 .done(function (response) {
@@ -50,53 +93,9 @@
                 .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("Error");
                 });
-        });
-        $('#btnNew').click(function () {
-            $.ajax({
-                type: "GET",
-                url: "/Product/Create"
-            })
-                .done(function (response) {
-                    $('#actionContainer').html(response);
-                })
-                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert("Error");
-                });
-        });
-        $(".btnEdit").click(function () {
-            $.ajax({
-                type: "GET",
-                url: "/Product/Edit",
-                data: {
-                    ID: $(this).attr("data-id")
-                }
-            })
-                .done(function (response) {
-                    $('#actionContainer').html(response);
-                })
-                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert("Error");
-                });
-        });
-        $(".btnDelete").click(function () {
-            var confirmDelete = confirm("Are you sure delete product !! ");
-            if (confirmDelete) {
-                $.ajax({
-                    type: "POST",
-                    url: "/Product/Delete",
-                    data: {
-                        ID: $(this).attr("data-id")
-                    }
-                })
-                    .done(function (response) {
-                        $('#tableContainer').html(response);
-                    })
-                    .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert("Error");
-                    });
-            }
-        });
-    </script>
-}
+        }
+    });
+</script>
+
 
 

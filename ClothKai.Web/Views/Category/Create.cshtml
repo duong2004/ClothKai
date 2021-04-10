@@ -6,10 +6,48 @@
 <h2>Create Category</h2>
 <form method="post">
     <label>Name</label>
-    <input name="Name"/>
+    <input name="Name" />
     <br />
     <label>Description</label>
-    <input name="Description"/>
+    <input name="Description" />
+    <br />
+    <label>Image</label>
+    <input name="ImageURL" id="ImageURL" type="hidden"/>
+    <input id="imageUpload" name="Image" type="file" accept=".png, .jpg" />
+    <br />
+    <div class="thumb">
+        <img id="categoryImage"/>
+    </div>
     <br />
     <button type="submit">Save</button>
 </form>
+<script>
+    $("#imageUpload").change(function () {
+        var element = this;
+        var formData = new FormData();
+        var totalFiles = element.files.length;
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file);
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Share/UploadImage",
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: 'json'
+        })
+            .done(function (response) {
+                debugger;
+                console.log(response);
+                if (response.Success) {
+                    $('#categoryImage').attr('src', response.ImageURL);
+                    $('#ImageURL').val(response.ImageURL);
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error");
+            });
+    });
+</script>
