@@ -2,16 +2,62 @@
 @{
     ViewBag.Title = "Edit";
 }
+<div class="container mt-2">
+    <h2>Edit Category</h2>
+    <form method="post">
+        <input name="ID" type="hidden" value="@Model.ID" />
+        <div class="form-group">
+            <label>Name</label>
+            <input name="Name" value="@Model.Name" class="form-control" />
+        </div>
 
-<h2>Edit Category</h2>
-<form method="post">
-    <input name="ID" type="hidden" value="@Model.ID"/>
-    <label>Name</label>
-    <input name="Name" value="@Model.Name" />
-    <br />
-    <label>Description</label>
-    <input name="Description" value="@Model.Description" />
-    <br />
-    <button type="submit">Save</button>
-</form>
+        <div class="form-group">
+            <label>Description</label>
+            <input name="Description" value="@Model.Description" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Image</label>
+            <input name="ImageURL" id="ImageURL" type="hidden" value="@Model.ImageURL" />
+            <input id="imageUpload" name="Image" type="file" accept=".png, .jpg" />
+        </div>
+        <div class="form-group">
+            <img id="categoryImage" src="@Model.ImageURL"  style="width:100px;height:90px;"/>
+        </div>
+        <div class="form-group">
+            <button type="submit">Save</button>
+        </div>
+
+    </form>
+</div>
+<script>
+    $("#imageUpload").change(function () {
+        var element = this;
+        var formData = new FormData();
+        var totalFiles = element.files.length;
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file);
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Share/UploadImage",
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: 'json'
+        })
+            .done(function (response) {
+                debugger;
+                console.log(response);
+                if (response.Success) {
+                    $('#categoryImage').attr('src', response.ImageURL);
+                    $('#ImageURL').val(response.ImageURL);
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error");
+            });
+    });
+</script>
+
 
