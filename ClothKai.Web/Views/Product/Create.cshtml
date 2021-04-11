@@ -1,19 +1,36 @@
-﻿
+﻿@model List<ClothKai.Entities.Category>
 @{
     ViewBag.Title = "Create";
 }
-<form id="createProduct">
-    <label>Name</label>
-    <input name="Name" />
-    <br />
-    <label>Description</label>
-    <input name="Description" />
-    <br />
-    <label>Price</label>
-    <input name="Price" />
-    <br />
-    <button type="button" id="btnSave">Save</button>
-</form>
+<div class="col-md-12">
+    <form id="createProduct">
+        <div class="form-group">
+            <label class="col-form-label">Category</label>
+            <select name="CategoryID">
+                @foreach (var category in Model)
+                {
+                    <option value="@category.ID">@category.Name</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="col-form-label">Name</label>
+            <input name="Name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label class="col-form-label">Description</label>
+            <input name="Description" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Price</label>
+            <input name="Price" class="form-control" />
+        </div>
+        <div class="form-group">
+            <button type="button" id="btnSave">Save</button>
+        </div>
+    </form>
+</div>
+
 <script>
     $('#btnSave').click(function () {
         $.ajax({

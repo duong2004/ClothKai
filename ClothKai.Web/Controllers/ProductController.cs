@@ -1,5 +1,6 @@
 ﻿using ClothKai.Entities;
 using ClothKai.Services;
+using ClothKai.Web.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace ClothKai.Web.Controllers
     public class ProductController : Controller
     {
         ProductService productService = new ProductService();
+        CategoryService categoryService = new CategoryService();
         // GET: Product
         public ActionResult Index()
         {
@@ -21,19 +23,25 @@ namespace ClothKai.Web.Controllers
             var listProduct = productService.GetProduct();
             if (s != null)
             {
-                listProduct = listProduct.Where(x => x.Name.Contains(s)).ToList();
+                listProduct = listProduct.Where(x => x.Name.ToLower().Contains(s.ToLower())).ToList();
             }
             return PartialView(listProduct);
         }
         [HttpGet]
         public ActionResult Create()
         {
-            return PartialView();
+            var categories = categoryService.GetCategory();
+            return PartialView(categories);
         }
         [HttpPost]
-        public ActionResult Create(Product product)
+        public ActionResult Create(CategoriesViewModels product)
         {
-            productService.SaveProduct(product);
+            var newProduct = new Product();
+            newProduct.Name = product.Name;
+            newProduct.Description = product.Description;
+            newProduct.Price = product.Price;
+            newProduct.Category = categoryService.GetCategoryID(product.CategoryID);
+            productService.SaveProduct(newProduct);
             return RedirectToAction("TableProduct");
         }
         [HttpGet]

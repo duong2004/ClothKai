@@ -2,15 +2,22 @@
 @{
     ViewBag.Title = "TableProduct";
 }
-<h2>List of Products</h2>
-<div>
+
+<h2 class="mb-2">List of Products</h2>
+<div class="mb-2">
     <form method="post">
-        <input name="s" id="s" placeholder="Key" />
-        <button type="button" id="btnSearch">Search</button>
+        <div class="row">
+            <div class="col-md-8">
+                <input name="s" id="s" placeholder="Search..." class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <button type="button" id="btnSearch" class="col-md-6">Search</button>
+                <button type="button" id="btnNew" class="col-md-5">New</button>
+            </div>
+        </div>
     </form>
-    <button type="button" id="btnNew">New</button>
 </div>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Name</th>
@@ -20,18 +27,37 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @if (Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>
+                        @if (item.Category != null)
+                        {
+                            <text>@item.Category.Name</text>
+                        }
+                        else
+                        {
+                            <text>-</text>
+                        }
+                    </td>
+                    <td>@item.Price</td>
+                    <td>
+                        <button type="button" class="btnEdit" data-id="@item.ID">Edit</button>
+                        <button type="button" class="btnDelete" data-id="@item.ID">Delete</button>
+                    </td>
+                </tr>
+            }
+        }
+        else
         {
             <tr>
-                <td>@item.Name</td>
-                <td>-</td>
-                <td>@item.Price</td>
-                <td>
-                    <button type="button" class="btnEdit" data-id="@item.ID">Edit</button>
-                    <button type="button" class="btnDelete" data-id="@item.ID">Delete</button>
-                </td>
+                <td colspan="4" style="color:red">No data</td>
             </tr>
         }
+
     </tbody>
 </table>
 <script type="text/javascript">
