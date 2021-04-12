@@ -23,7 +23,7 @@
             <th>Name</th>
             <th>Category</th>
             <th>Price</th>
-            <th>Action</th>
+            <th style="width:40%;">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -47,6 +47,7 @@
                     <td>
                         <button type="button" class="btnEdit" data-id="@item.ID">Edit</button>
                         <button type="button" class="btnDelete" data-id="@item.ID">Delete</button>
+                        <button type="button" class="addToCart" data-id="@item.ID">Add to Cart</button>
                     </td>
                 </tr>
             }
@@ -83,6 +84,7 @@
         })
             .done(function (response) {
                 $('#actionContainer').html(response);
+                focusAction();
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Error");
@@ -98,29 +100,88 @@
         })
             .done(function (response) {
                 $('#actionContainer').html(response);
+                focusAction();
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Error");
             });
     });
     $(".btnDelete").click(function () {
-        var confirmDelete = confirm("Are you sure delete product !! ");
-        if (confirmDelete) {
-            $.ajax({
-                type: "POST",
-                url: "/Product/Delete",
-                data: {
-                    ID: $(this).attr("data-id")
-                }
-            })
-                .done(function (response) {
-                    $('#tableContainer').html(response);
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+                $.ajax({
+                    type: "POST",
+                    url: "/Product/Delete",
+                    data: {
+                        ID: $(this).attr("data-id")
+                    }
                 })
-                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert("Error");
-                });
-        }
+                    .done(function (response) {
+                        $('#tableContainer').html(response);
+                    })
+                    .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("Error");
+                    });
+            }
+        })
+        //var confirmDelete = confirm("Are you sure delete product !! ");
+        //if (confirmDelete) {
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "/Product/Delete",
+        //        data: {
+        //            ID: $(this).attr("data-id")
+        //        }
+        //    })
+        //        .done(function (response) {
+        //            $('#tableContainer').html(response);
+        //        })
+        //        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        //            alert("Error");
+        //        });
+        //}
     });
+    var products = [];
+    $(".addToCart").click(function () {
+        var productID = $(this).attr("data-id");
+        products.push(productID);
+        $.cookie('CartProducts', products.join('-'), { path: '/' });
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+        Toast.fire({
+            icon: 'success',
+            title: 'Signed in successfully'
+        })
+    });
+
+    function focusAction() {
+        $('html,body').animate({
+            scrollTop: $("#actionContainer").offset().top - 100
+        }, 1000);
+    }
 </script>
 
 

@@ -11,12 +11,20 @@ namespace ClothKai.Services
 {
     public class ProductService
     {
-        // Get All Product
+        // Get All Products
         public List<Product> GetProduct()
         {
             using (var context = new CBContext())
             {
                 return context.Products.Include(x=>x.Category).ToList();
+            }
+        }
+        // Get List All Products
+        public List<Product> GetProducts(List<int> IDs)
+        {
+            using (var context = new CBContext())
+            {
+                return context.Products.Where(product => IDs.Contains(product.ID)).ToList();
             }
         }
         // Save Product
