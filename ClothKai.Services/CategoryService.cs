@@ -18,6 +18,14 @@ namespace ClothKai.Services
                 return context.Categories.ToList();
             }
         }
+        // Get Feature Categories Home
+        public List<Category> GetFeatureCategory()
+        {
+            using (var context = new CBContext())
+            {
+                return context.Categories.Where(x=>x.isFeature && x.ImageURL != null).OrderByDescending(x=>x.ID).Take(4).ToList();
+            }
+        }
         // Save Category
         public void SaveCategory(Category category)
         {

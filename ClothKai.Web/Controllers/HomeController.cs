@@ -11,10 +11,10 @@ namespace ClothKai.Web.Controllers
     public class HomeController : Controller
     {
         CategoryService categoryService = new CategoryService();
+        HomeViewModels model = new HomeViewModels();
         public ActionResult Index()
-        {
-            HomeViewModels model = new HomeViewModels();
-            model.categories = categoryService.GetCategory();
+        {           
+            model.FeatureCategories = categoryService.GetFeatureCategory();
             return View(model);
         }
 

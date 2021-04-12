@@ -8,7 +8,7 @@ namespace ClothKai.Web.ViewModels
 {
     public class HomeViewModels
     {
-        public List<Category> categories { get; set; }
-        public List<Product> products { get; set; }
+        public List<Category> FeatureCategories { get; set; }
+        public List<Product> FeatureProducts { get; set; }
     }
 }
