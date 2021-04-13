@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using ClothKai.Services;
+@{
+    ConfigrutionService configurationService = new ConfigrutionService();
+}
+<!DOCTYPE html>
 <html>
 <head>
     <!-- Basic Page Needs -->
@@ -15,7 +19,6 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@9.17.1/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.17.1/dist/sweetalert2.min.js"></script>
     <!--Sweet Alert 2-->
-
     <!-- Bootstrap  -->
     <link rel="stylesheet" type="text/css" href="~/Content/stylesheets/bootstrap.css">
 
@@ -176,7 +179,7 @@
                                 </div>
                             </form>
                             <ul class="flat-social">
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="@configurationService.GetConfig("FacebookURL").Value" target="_blank"><i class="fa fa-facebook"></i></a></li>
                                 <li><a href="#"><i class="fa fa-twitter"></i></a></li>
                                 <li><a href="#"><i class="fa fa-google"></i></a></li>
                                 <li><a href="#"><i class="fa fa-behance"></i></a></li>
@@ -227,9 +230,9 @@
                                 <a href="index.html"><img src="~/Content/images/logo@2x.png" alt="image" width="107" height="24"></a>
                             </div>
                             <ul class="flat-contact">
-                                <li class="address">112 Kingdom, NA 12, New York</li>
-                                <li class="phone">+12 345 678 910</li>
-                                <li class="email">infor.deercreative@gmail.com</li>
+                                <li class="address">@configurationService.GetConfig("CompanyAddress").Value</li>
+                                <li class="phone">@configurationService.GetConfig("CompanyPhone").Value</li>
+                                <li class="email">@configurationService.GetConfig("EmailURL").Value</li>
                             </ul><!-- /.flat-contact -->
                         </div><!-- /.widget -->
                     </div><!-- /.col-md-3 -->
