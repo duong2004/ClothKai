@@ -10,6 +10,20 @@ namespace ClothKai.Services
 {
     public class CategoryService
     {
+        #region Singleton
+        public static CategoryService Instance
+        {
+            get
+            {
+                if (instance == null) instance = new CategoryService();
+                return instance;
+            }
+        }
+        private static CategoryService instance { get; set; }
+        private CategoryService()
+        {
+        }
+        #endregion
         // Get All Category
         public List<Category> GetCategory()
         {

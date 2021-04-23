@@ -10,7 +10,6 @@ namespace ClothKai.Web.Controllers
 {
     public class ShopController : Controller
     {
-        ProductService productService = new ProductService();
         // GET: Shop
         public ActionResult Checkout()
         {
@@ -22,7 +21,7 @@ namespace ClothKai.Web.Controllers
                 //var ids = productsID.Split('-');
                 //List<int> pIDs = ids.Select(x => int.Parse(x)).ToList();
                 model.ProductIDs = CartProductsCookie.Value.Split('-').Select(x => int.Parse(x)).ToList();
-                model.CartProducts = productService.GetProducts(model.ProductIDs);
+                model.CartProducts = ProductService.Instance.GetProducts(model.ProductIDs);
             }
             return View(model);
         }

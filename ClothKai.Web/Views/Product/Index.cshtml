@@ -12,3 +12,10 @@
     </div>
 </div>
 
+<script>
+    function focusAction(controlTofocus) {
+        $('html,body').animate({
+            scrollTop: $("#" + controlTofocus).offset().top - 100
+        }, 1000);
+    }
+</script>

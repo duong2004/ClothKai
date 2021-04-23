@@ -6,17 +6,24 @@
 <h2>Edit</h2>
 
 <form id="updateProduct">
-    <input type="hidden" name="ID" value="@Model.ID"/>
-    <label>Name</label>
-    <input name="Name" value="@Model.Name"/>
-    <br />
-    <label>Description</label>
-    <input name="Description" value="@Model.Description"/>
-    <br />
-    <label>Price</label>
-    <input name="Price" value="@Model.Price"/>
-    <br />
-    <button type="button" id="btnUpdate">Update</button>
+    <input type="hidden" name="ID" value="@Model.ID" />
+    <div class="form-group">
+        <label class="col-form-label">Name</label>
+        <input name="Name" class="form-control" value="@Model.Name" />
+    </div>
+    <div class="form-group">
+        <label class="col-form-label">Description</label>
+        <input name="Description" class="form-control" value="@Model.Description" />
+    </div>
+    <div class="form-group">
+        <label>Price</label>
+        <input name="Price" class="form-control" value="@Model.Price" />
+    </div>
+
+    <div class="form-group">
+        <button type="button" id="btnUpdate">Update</button>
+        <button type="button" id="btnCancle">Cancle</button>
+    </div>
 </form>
 <script>
     $('#btnUpdate').click(function () {
@@ -28,10 +35,15 @@
             .done(function (response) {
                 $('#tableContainer').html(response);
                 $('#actionContainer').html("");
+                focusAction("tableContainer");
             })
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Error");
             });
+    });
+    $('#btnCancle').click(function () {
+        $('#actionContainer').html("");
+        focusAction("tableContainer");
     });
 </script>
 

@@ -9,12 +9,11 @@ using System.Web.Mvc;
 namespace ClothKai.Web.Controllers
 {   
     public class CategoryController : Controller
-    {
-        CategoryService categoryService = new CategoryService();
+    {       
         [HttpGet]
         public ActionResult Index()
         {
-            var listCategory = categoryService.GetCategory();
+            var listCategory = CategoryService.Instance.GetCategory();
             return View(listCategory);
         }
         // GET: Category/Create
@@ -26,13 +25,13 @@ namespace ClothKai.Web.Controllers
         [HttpPost]
         public ActionResult Create(Category category)
         {
-            categoryService.SaveCategory(category);
+            CategoryService.Instance.SaveCategory(category);
             return RedirectToAction("Index");
         }
         [HttpGet]
         public ActionResult Edit(int ID)
         {
-            var categoryID = categoryService.GetCategoryID(ID);
+            var categoryID = CategoryService.Instance.GetCategoryID(ID);
             if (categoryID == null)
             {
                 return View("Error");
@@ -42,13 +41,13 @@ namespace ClothKai.Web.Controllers
         [HttpPost]
         public ActionResult Edit(Category category)
         {
-            categoryService.UpdateCategory(category);
+            CategoryService.Instance.UpdateCategory(category);
             return RedirectToAction("Index");
         }
         [HttpGet]
         public ActionResult Delete(int ID)
         {
-            var categoryID = categoryService.GetCategoryID(ID);
+            var categoryID = CategoryService.Instance.GetCategoryID(ID);
             if (categoryID == null)
             {
                 return View("Error");
@@ -58,7 +57,7 @@ namespace ClothKai.Web.Controllers
         [HttpPost]
         public ActionResult Delete(Category category)
         {
-            categoryService.DeleteCategory(category);
+            CategoryService.Instance.DeleteCategory(category);
             return RedirectToAction("Index");
         }
     }

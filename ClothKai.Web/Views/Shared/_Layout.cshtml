@@ -1,6 +1,5 @@
 ﻿@using ClothKai.Services;
 @{
-    ConfigrutionService configurationService = new ConfigrutionService();
 }
 <!DOCTYPE html>
 <html>
@@ -179,7 +178,7 @@
                                 </div>
                             </form>
                             <ul class="flat-social">
-                                <li><a href="@configurationService.GetConfig("FacebookURL").Value" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="@ConfigrutionService.Instance.GetConfig("FacebookURL").Value" target="_blank"><i class="fa fa-facebook"></i></a></li>
                                 <li><a href="#"><i class="fa fa-twitter"></i></a></li>
                                 <li><a href="#"><i class="fa fa-google"></i></a></li>
                                 <li><a href="#"><i class="fa fa-behance"></i></a></li>
@@ -230,9 +229,9 @@
                                 <a href="index.html"><img src="~/Content/images/logo@2x.png" alt="image" width="107" height="24"></a>
                             </div>
                             <ul class="flat-contact">
-                                <li class="address">@configurationService.GetConfig("CompanyAddress").Value</li>
-                                <li class="phone">@configurationService.GetConfig("CompanyPhone").Value</li>
-                                <li class="email">@configurationService.GetConfig("EmailURL").Value</li>
+                                <li class="address">@ConfigrutionService.Instance.GetConfig("CompanyAddress").Value</li>
+                                <li class="phone">@ConfigrutionService.Instance.GetConfig("CompanyPhone").Value</li>
+                                <li class="email">@ConfigrutionService.Instance.GetConfig("EmailURL").Value</li>
                             </ul><!-- /.flat-contact -->
                         </div><!-- /.widget -->
                     </div><!-- /.col-md-3 -->

@@ -11,12 +11,28 @@ namespace ClothKai.Services
 {
     public class ProductService
     {
-        // Get All Products
-        public List<Product> GetProduct()
+        #region Singleton
+        public static ProductService Instance
         {
+            get
+            {
+                if (instance == null) instance = new ProductService();
+                return instance;
+            }
+        }       
+        private static ProductService instance { get; set; }
+        private ProductService()
+        {
+        }
+        #endregion
+        // Get All Products
+        public List<Product> GetProduct(int pageNo)
+        {
+            int pageSize = 5;
             using (var context = new CBContext())
             {
-                return context.Products.Include(x=>x.Category).ToList();
+                //return context.Products.OrderByDescending(x=>x.ID).Skip((pageNo - 1) * pageSize).Take(pageSize).Include(x => x.Category).ToList();
+                return context.Products.Include(x => x.Category).ToList();
             }
         }
         // Get List All Products
