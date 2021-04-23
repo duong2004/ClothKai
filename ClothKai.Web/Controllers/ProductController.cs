@@ -11,8 +11,6 @@ namespace ClothKai.Web.Controllers
 {
     public class ProductController : Controller
     {
-        //ProductService productService = new ProductService();
-        //CategoryService categoryService = new CategoryService();
         // GET: Product
         public ActionResult Index()
         {
@@ -33,30 +31,50 @@ namespace ClothKai.Web.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            var categories = CategoryService.Instance.GetCategory();
-            return PartialView(categories);
+            NewProductViewModel model = new NewProductViewModel();
+            model.AvailableCategories = CategoryService.Instance.GetCategory();
+            return PartialView(model);
         }
         [HttpPost]
-        public ActionResult Create(CategoriesViewModels product)
+        public ActionResult Create(NewProductViewModel product)
         {
             var newProduct = new Product();
             newProduct.Name = product.Name;
             newProduct.Description = product.Description;
             newProduct.Price = product.Price;
             newProduct.Category = CategoryService.Instance.GetCategoryID(product.CategoryID);
+            newProduct.ImageURL = product.ImageURL;
             ProductService.Instance.SaveProduct(newProduct);
             return RedirectToAction("TableProduct");
         }
         [HttpGet]
         public ActionResult Edit(int ID)
         {
+            EditProductViewModel model = new EditProductViewModel();
             var product = ProductService.Instance.GetProductID(ID);
-            return PartialView(product);
+            model.ID = product.ID;
+            model.Name = product.Name;
+            model.Description = product.Description;
+            model.Price = product.Price;
+            model.CategoryID = product.CategoryID;
+            model.ImageURL = product.ImageURL;
+            model.AvailableCategories = CategoryService.Instance.GetCategory();
+            return PartialView(model);
         }
         [HttpPost]
-        public ActionResult Edit(Product product)
+        public ActionResult Edit(EditProductViewModel product)
         {
-            ProductService.Instance.UpdateProduct(product);
+            var editProduct = ProductService.Instance.GetProductID(product.ID);
+            editProduct.Name = product.Name;
+            editProduct.Description = product.Description;
+            editProduct.Price = product.Price;
+            //editProduct.Category = null;
+            editProduct.CategoryID = product.CategoryID;
+            if (!string.IsNullOrEmpty(product.ImageURL))
+            {
+                editProduct.ImageURL = product.ImageURL;
+            }
+            ProductService.Instance.UpdateProduct(editProduct);
             return RedirectToAction("TableProduct");
         }
         [HttpPost]

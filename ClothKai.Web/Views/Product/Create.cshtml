@@ -1,39 +1,89 @@
-﻿@model List<ClothKai.Entities.Category>
+﻿@model ClothKai.Web.ViewModels.NewProductViewModel
 @{
     ViewBag.Title = "Create";
+    var imageURL = "/Content/images/a183d876-619c-4ca9-a20c-bd19d0448e14.png";
 }
 <div class="col-md-12">
     <form id="createProduct">
-        <div class="form-group">
-            <label class="col-form-label">Category</label>
-            <select name="CategoryID">
-                @foreach (var category in Model)
-                {
-                    <option value="@category.ID">@category.Name</option>
-                }
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="col-form-label">Name</label>
-            <input name="Name" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label class="col-form-label">Description</label>
-            <input name="Description" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label>Price</label>
-            <input name="Price" class="form-control" />
-        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label class="col-form-label">Category</label>
+                    <select name="CategoryID">
+                        @foreach (var category in Model.AvailableCategories)
+                        {
+                            <option value="@category.ID">@category.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Name</label>
+                    <input name="Name" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Description</label>
+                    <input name="Description" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Price</label>
+                    <input name="Price" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Image</label>
+                    <input name="ImageURL" id="ImageURL" type="hidden" />
+                    <input id="imageUpload" name="Image" type="file" accept=".png, .jpg" />
+                </div>
 
-        <div class="form-group">
-            <button type="button" id="btnSave">Save</button>
-            <button type="button" id="btnCancle">Cancle</button>
+            </div>
+            <div class="col-md-4">
+                <div class="thumb">
+                    <img class="img-thumbnail img-fluid" id="productImage" src="@imageURL" />
+                </div>
+            </div>
+            
         </div>
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button type="button" id="btnSave">Save</button>
+                    <button type="button" id="btnCancle">Cancle</button>
+                </div>
+            </div>
+        </div>
+        
     </form>
 </div>
 
 <script>
+    $("#imageUpload").change(function () {
+        var element = this;
+        var formData = new FormData();
+        var totalFiles = element.files.length;
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file);
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Share/UploadImage",
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: 'json'
+        })
+            .done(function (response) {
+                debugger;
+                console.log(response);
+                if (response.Success) {
+                    $('#productImage').attr('src', response.ImageURL);
+                    $('#ImageURL').val(response.ImageURL);
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error");
+            });
+    });
+    
     $('#btnSave').click(function () {
         $.ajax({
             type: "POST",

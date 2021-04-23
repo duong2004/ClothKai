@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 namespace ClothKai.Entities
 {
     public class Category : BaseEntity
-    {       
-        public string ImageURL { get; set; }
+    {           
         public List<Product> Products { get; set; }
         public bool isFeature { get; set; }
     }

@@ -1,31 +1,87 @@
-﻿@model ClothKai.Entities.Product
+﻿@model ClothKai.Web.ViewModels.EditProductViewModel
 @{
     ViewBag.Title = "Edit";
+    var imageURL = !string.IsNullOrEmpty(Model.ImageURL)? Model.ImageURL : "/Content/images/a183d876-619c-4ca9-a20c-bd19d0448e14.png"; 
 }
-
 <h2>Edit</h2>
-
 <form id="updateProduct">
     <input type="hidden" name="ID" value="@Model.ID" />
-    <div class="form-group">
-        <label class="col-form-label">Name</label>
-        <input name="Name" class="form-control" value="@Model.Name" />
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label class="col-form-label">Category</label>
+                <select name="CategoryID">
+                    @foreach (var category in Model.AvailableCategories)
+                    {
+                        var select = category.ID == Model.CategoryID ? "selected" : string.Empty;
+                        <option value="@category.ID" @select>@category.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label">Name</label>
+                <input name="Name" class="form-control" value="@Model.Name" />
+            </div>
+            <div class="form-group">
+                <label class="col-form-label">Description</label>
+                <input name="Description" class="form-control" value="@Model.Description" />
+            </div>
+            <div class="form-group">
+                <label>Price</label>
+                <input name="Price" class="form-control" value="@Model.Price" />
+            </div>
+            <div class="form-group">
+                <label>Image</label>
+                <input name="ImageURL" id="ImageURL" type="hidden" />
+                <input id="imageUpload" name="Image" type="file" accept=".png, .jpg" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="thumb">
+                <img class="img-thumbnail img-fluid" id="productImage" src="@imageURL" />
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label class="col-form-label">Description</label>
-        <input name="Description" class="form-control" value="@Model.Description" />
-    </div>
-    <div class="form-group">
-        <label>Price</label>
-        <input name="Price" class="form-control" value="@Model.Price" />
-    </div>
-
-    <div class="form-group">
-        <button type="button" id="btnUpdate">Update</button>
-        <button type="button" id="btnCancle">Cancle</button>
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <div class="form-group">
+                <button type="button" id="btnUpdate">Update</button>
+                <button type="button" id="btnCancle">Cancle</button>
+            </div>
+        </div>
     </div>
 </form>
 <script>
+
+    $("#imageUpload").change(function () {
+        var element = this;
+        var formData = new FormData();
+        var totalFiles = element.files.length;
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file);
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Share/UploadImage",
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: 'json'
+        })
+            .done(function (response) {
+                debugger;
+                console.log(response);
+                if (response.Success) {
+                    $('#productImage').attr('src', response.ImageURL);
+                    $('#ImageURL').val(response.ImageURL);
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error");
+            });
+    });
+
     $('#btnUpdate').click(function () {
         $.ajax({
             type: "POST",

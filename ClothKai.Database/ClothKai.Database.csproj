@@ -67,6 +67,14 @@
     <Compile Include="Migrations\202104130148121_configurationtable.Designer.cs">
       <DependentUpon>202104130148121_configurationtable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202104230634113_imageURLProduct.cs" />
+    <Compile Include="Migrations\202104230634113_imageURLProduct.Designer.cs">
+      <DependentUpon>202104230634113_imageURLProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202104230718460_updateCategoryProduct.cs" />
+    <Compile Include="Migrations\202104230718460_updateCategoryProduct.Designer.cs">
+      <DependentUpon>202104230718460_updateCategoryProduct.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -92,6 +100,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202104130148121_configurationtable.resx">
       <DependentUpon>202104130148121_configurationtable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104230634113_imageURLProduct.resx">
+      <DependentUpon>202104230634113_imageURLProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104230718460_updateCategoryProduct.resx">
+      <DependentUpon>202104230718460_updateCategoryProduct.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
