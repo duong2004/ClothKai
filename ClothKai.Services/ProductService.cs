@@ -26,13 +26,47 @@ namespace ClothKai.Services
         }
         #endregion
         // Get All Products
-        public List<Product> GetProduct(int pageNo)
+        public List<Product> GetProduct(string s, int pageNo)
         {
             int pageSize = 5;
             using (var context = new CBContext())
             {
-                //return context.Products.OrderByDescending(x=>x.ID).Skip((pageNo - 1) * pageSize).Take(pageSize).Include(x => x.Category).ToList();
-                return context.Products.Include(x => x.Category).ToList();
+                if (!string.IsNullOrEmpty(s))
+                {
+                    return context.Products
+                        .Where(x => x.Name != null && x.Name.ToLower().Contains(s.ToLower()))
+                        .OrderByDescending(x => x.ID)
+                        .Skip((pageNo - 1) * pageSize)
+                        .Take(pageSize)
+                        .Include(x => x.Category)
+                        .ToList();
+                }
+                else
+                {
+                    return context.Products
+                    .OrderByDescending(x => x.ID)
+                    .Skip((pageNo - 1) * pageSize)
+                    .Take(pageSize)
+                    .Include(x => x.Category)
+                    .ToList();
+                }   
+            }
+        }
+        // Get Count Number Product
+        public int GetProductCount(string s)
+        {
+            using (var context = new CBContext())
+            {
+                if (!string.IsNullOrEmpty(s))
+                {
+                    return context.Products
+                        .Where(x => x.Name != null && x.Name.ToLower().Contains(s.ToLower()))
+                        .Count();
+                }
+                else
+                {
+                    return context.Products.Count();
+                } 
             }
         }
         // Get List All Products

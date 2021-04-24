@@ -19,13 +19,11 @@ namespace ClothKai.Web.Controllers
         public ActionResult TableProduct(string s, int? pageNo)
         {
             ProductsSearchViewModel model = new ProductsSearchViewModel();
-            model.PageNo = pageNo.HasValue ? pageNo.Value > 0 ? pageNo.Value : 1 : 1;
-            model.Products = ProductService.Instance.GetProduct(model.PageNo);
-            if (string.IsNullOrEmpty(s) == false)
-            {
-                model.SearchTerm = s;
-                model.Products = model.Products.Where(x => x.Name != null && x.Name.ToLower().Contains(s.ToLower())).ToList();
-            }
+            model.SearchTerm = s;
+            pageNo = pageNo.HasValue ? pageNo.Value > 0 ? pageNo.Value : 1 : 1;
+            var totalItem = ProductService.Instance.GetProductCount(s);
+            model.Products = ProductService.Instance.GetProduct(s,pageNo.Value);
+            model.Pager = new Pager(totalItem,pageNo);
             return PartialView(model);
         }
         [HttpGet]

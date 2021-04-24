@@ -3,17 +3,14 @@
     ViewBag.Title = "TableProduct";
 }
 
-<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
-<script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-
 <h2 class="mb-2">List of Products</h2>
 <div class="mb-2">
     <form method="post">
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <input name="s" id="s" placeholder="Search..." class="form-control" />
-                </div>           
+                    <input name="s" id="s" placeholder="Search..." class="form-control" value="@Model.SearchTerm" />
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
@@ -28,7 +25,7 @@
                             <button type="button" id="btnNew" class="col-12">New</button>
                         </div>
                     </div>
-                </div>  
+                </div>
             </div>
         </div>
     </form>
@@ -77,18 +74,32 @@
     </tbody>
 </table>
 <div>
-    @*@if (Model.PageNo != 1)
+    @if (Model.Pager != null)
+    {
+        if (Model.Pager.CurrentPage > 1)
         {
-            <button class="pagesButton" id="PreviousRecords" data-pageNo="@(Model.PageNo - 1)">Previous</button>
+            <button class="pagesButton" data-pageNo="1"><<</button>
+            <button class="pagesButton" data-pageNo="@(Model.Pager.CurrentPage - 1)"><</button>
         }
-        <button class="pagesButton" id="NextRecords" data-pageNo="@(Model.PageNo + 1)">Next</button>*@
+        for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+        {
+            var actived = Model.Pager.CurrentPage == page ? "active bg-info" : string.Empty;
+            <button class="@actived pagesButton" data-pageNo="@page">@page</button>
+        }
+        if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+        {
+            <button class="pagesButton" data-pageNo="@(Model.Pager.CurrentPage + 1)">></button>
+            <button class="pagesButton" data-pageNo="@Model.Pager.EndPage">>></button>
+        }
+    }
 </div>
 <script type="text/javascript">
-    $('#ProductTable').DataTable();
     $(".pagesButton").click(function () {
+        var s = $('#s').val();
         $.ajax({
             url: "/Product/TableProduct",
             data: {
+                s: s,
                 pageNo: $(this).attr("data-pageNo")
             }
         })
