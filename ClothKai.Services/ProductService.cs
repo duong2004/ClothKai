@@ -28,7 +28,7 @@ namespace ClothKai.Services
         // Get All Products
         public List<Product> GetProduct(string s, int pageNo)
         {
-            int pageSize = 5;
+            int pageSize = Int32.Parse(ConfigrutionService.Instance.GetConfig("PageSize").Value);
             using (var context = new CBContext())
             {
                 if (!string.IsNullOrEmpty(s))

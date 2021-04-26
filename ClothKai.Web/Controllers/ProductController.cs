@@ -23,7 +23,8 @@ namespace ClothKai.Web.Controllers
             pageNo = pageNo.HasValue ? pageNo.Value > 0 ? pageNo.Value : 1 : 1;
             var totalItem = ProductService.Instance.GetProductCount(s);
             model.Products = ProductService.Instance.GetProduct(s,pageNo.Value);
-            model.Pager = new Pager(totalItem,pageNo);
+            int pageSize = int.Parse(ConfigrutionService.Instance.GetConfig("PageSize").Value);
+            model.Pager = new Pager(totalItem,pageNo,pageSize);
             return PartialView(model);
         }
         [HttpGet]
@@ -36,14 +37,22 @@ namespace ClothKai.Web.Controllers
         [HttpPost]
         public ActionResult Create(NewProductViewModel product)
         {
-            var newProduct = new Product();
-            newProduct.Name = product.Name;
-            newProduct.Description = product.Description;
-            newProduct.Price = product.Price;
-            newProduct.Category = CategoryService.Instance.GetCategoryID(product.CategoryID);
-            newProduct.ImageURL = product.ImageURL;
-            ProductService.Instance.SaveProduct(newProduct);
-            return RedirectToAction("TableProduct");
+            if (ModelState.IsValid)
+            {
+                var newProduct = new Product();
+                newProduct.Name = product.Name;
+                newProduct.Description = product.Description;
+                newProduct.Price = product.Price;
+                newProduct.Category = CategoryService.Instance.GetCategoryID(product.CategoryID);
+                newProduct.ImageURL = product.ImageURL;
+                ProductService.Instance.SaveProduct(newProduct);
+                return RedirectToAction("TableProduct");
+            }
+            else
+            {
+                return new HttpStatusCodeResult(500);
+            }
+
         }
         [HttpGet]
         public ActionResult Edit(int ID)

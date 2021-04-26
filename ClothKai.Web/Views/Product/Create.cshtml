@@ -17,7 +17,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="col-form-label">Name</label>
+                    <label class="col-form-label">Name<span class="text-danger">*</span></label>
                     <input name="Name" class="form-control" />
                 </div>
                 <div class="form-group">
@@ -40,7 +40,7 @@
                     <img class="img-thumbnail img-fluid" id="productImage" src="@imageURL" />
                 </div>
             </div>
-            
+
         </div>
         <div class="row mt-3">
             <div class="col-md-12">
@@ -50,7 +50,7 @@
                 </div>
             </div>
         </div>
-        
+
     </form>
 </div>
 
@@ -83,21 +83,59 @@
                 alert("Error");
             });
     });
-    
+
+    $("#createProduct").validate({
+        rules: {
+            Name: {
+                required: true,
+                minlength: 5,
+                maxlength: 500
+            },
+            Description: {
+                maxlength: 500
+            }
+        },
+        messages: {
+            Name: {
+                required: "Name is required",
+                minlength: "Minimum length is 5",
+                maxlength: "Maxnimum length is 50"
+            },
+            Description: {
+                maxlength: "Maxnimum length is 500"
+            }
+        }
+    });
+
     $('#btnSave').click(function () {
-        $.ajax({
-            type: "POST",
-            url: "/Product/Create",
-            data: $('#createProduct').serialize()
-        })
-            .done(function (response) {
-                $('#tableContainer').html(response);
-                $('#actionContainer').html("");
-                focusAction("tableContainer");
+        debugger;
+        if ($("#createProduct").valid()) {
+            $.ajax({
+                type: "POST",   
+                url: "/Product/Create",
+                data: $('#createProduct').serialize()
             })
-            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("Error");
-            });
+                .done(function (response) {
+                    $('#tableContainer').html(response);
+                    $('#actionContainer').html("");
+                    focusAction("tableContainer");
+                })
+                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                    Swal.fire(
+                        'Warning?',
+                        'Please enter all required fields?',
+                        'warning'
+                    );
+                });
+        }
+        else {
+            Swal.fire(
+                'Warning?',
+                'Please enter all required fields?',
+                'warning'
+            );
+        }
+
     });
     $('#btnCancle').click(function () {
         $('#actionContainer').html("");

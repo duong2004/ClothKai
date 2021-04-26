@@ -8,11 +8,15 @@ using System.Threading.Tasks;
 
 namespace ClothKai.Database
 {
-    public class CBContext : DbContext
+    public class CBContext : DbContext,IDisposable
     {
         public CBContext() : base("ClothKaiConnection")
         {
 
+        }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Product>().Property(p => p.Name).IsRequired().HasMaxLength(50);
         }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }

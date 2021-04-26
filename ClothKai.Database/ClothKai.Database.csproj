@@ -75,6 +75,10 @@
     <Compile Include="Migrations\202104230718460_updateCategoryProduct.Designer.cs">
       <DependentUpon>202104230718460_updateCategoryProduct.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202104260543101_addProductValidation.cs" />
+    <Compile Include="Migrations\202104260543101_addProductValidation.Designer.cs">
+      <DependentUpon>202104260543101_addProductValidation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -106,6 +110,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202104230718460_updateCategoryProduct.resx">
       <DependentUpon>202104230718460_updateCategoryProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104260543101_addProductValidation.resx">
+      <DependentUpon>202104260543101_addProductValidation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
