@@ -25,6 +25,59 @@ namespace ClothKai.Services
         {
         }
         #endregion
+        // Get Products by search in Shop.
+        public List<Product> SearchProducts(string searchTerm, int? minnimumPrice, int? maxnimumPrice, int? categoryID, int? sortBy)
+        {
+            using (var context = new CBContext())
+            {
+                var products = new List<Product>();
+                products = context.Products.ToList();
+                if (categoryID.HasValue)
+                {
+                    products = products.Where(x => x.CategoryID == categoryID.Value).ToList();
+                }
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    products = products.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower())).ToList();
+                }
+                if (minnimumPrice.HasValue)
+                {
+                    products = products.Where(x => x.Price >= minnimumPrice.Value).ToList();
+                }
+                if (maxnimumPrice.HasValue)
+                {
+                    products = products.Where(x => x.CategoryID <= maxnimumPrice.Value).ToList();
+                }
+                if (sortBy.HasValue)
+                {
+                    switch (sortBy.Value) 
+                    {
+                        case 1:
+                            products = products.OrderBy(x => x.ID).ToList();
+                            break;
+                        case 2:
+                            products = products.OrderByDescending(x => x.ID).ToList();
+                            break;
+                        case 3:
+                            products = products.OrderBy(x => x.Price).ToList();
+                            break;
+                        default:
+                            products = products.OrderByDescending(x => x.Price).ToList();
+                            break;
+                    }
+
+                }
+                return products;
+            }
+        }
+        // Get Latest Products
+        public int GetMaximumPrice()
+        {
+            using (var context = new CBContext())
+            {
+                return (int)(context.Products.Max(x => x.Price));
+            }
+        }
         // Get All Products
         public List<Product> GetProduct(string s, int pageNo)
         {

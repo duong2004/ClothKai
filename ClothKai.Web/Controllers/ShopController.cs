@@ -5,11 +5,22 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ClothKai.Web.ViewModels;
+using ClothKai.Web.Code;
 
 namespace ClothKai.Web.Controllers
 {
     public class ShopController : Controller
     {
+        public ActionResult Index(string searchTerm, int? minnimumPrice, int? maxnimumPrice,int? categoryID, int? sortBy)
+        {
+            ShopViewModel model = new ShopViewModel();
+            model.Categories = CategoryService.Instance.GetCategory();
+            model.MaxnimumPrice = ProductService.Instance.GetMaximumPrice();
+            model.Products = ProductService.Instance.SearchProducts(searchTerm,minnimumPrice,maxnimumPrice,categoryID,sortBy);
+            model.sortBy = sortBy;
+            model.CategoryID = categoryID;
+            return View(model);
+        }
         // GET: Shop
         public ActionResult Checkout()
         {

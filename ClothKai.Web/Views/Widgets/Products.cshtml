@@ -10,7 +10,7 @@
             <li class="active"><a href="#" data-filter="*">All Product</a></li>
             @foreach (var category in Model.Products.Select(x => x.Category).ToList().Distinct())
             {
-                <li><a href="#" data-filter=".@category.Name.ToLower()">@category.Name</a></li>
+                <li><a href="#" data-filter=".@category.ID">@category.Name</a></li>
             }
         </ul>
         <div class="divider h54"></div>
@@ -20,7 +20,7 @@
             @foreach (var item in Model.Products)
             {
                 var image = item.ImageURL != null ? item.ImageURL : defaultImage;
-                <li class="product-item @item.Category.Name.ToLower()">
+                <li class="product-item @item.Category.ID">
                     <div class="product-thumb clearfix">
                         <a href="@Url.Action("Detail","Product",new { ID = item.ID})" class="product-thumb">
                             <img src="@image" alt="@item.Name" style="height:250px;">

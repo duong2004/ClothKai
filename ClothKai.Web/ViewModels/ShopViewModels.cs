@@ -11,4 +11,12 @@ namespace ClothKai.Web.ViewModels
         public List<Product> CartProducts { get; set; }
         public List<int> ProductIDs { get; set; }
     }
+    public class ShopViewModel
+    {
+        public int MaxnimumPrice { get; set; }
+        public List<Category> Categories { get; set; }
+        public List<Product> Products { get; set; }
+        public int? sortBy { get; set; }
+        public int? CategoryID { get; set; }
+    }
 }
