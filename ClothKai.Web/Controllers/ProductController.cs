@@ -90,5 +90,13 @@ namespace ClothKai.Web.Controllers
             ProductService.Instance.DeleteProduct(ID);
             return RedirectToAction("TableProduct");
         }
+        [HttpGet]
+        public ActionResult Detail(int ID)
+        {
+            ProductViewModel model = new ProductViewModel();
+            model.Product = ProductService.Instance.GetProductID(ID);
+            model.Category = CategoryService.Instance.GetCategoryID(model.Product.CategoryID);
+            return View(model);
+        }
     }
 }

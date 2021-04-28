@@ -19,7 +19,7 @@ namespace ClothKai.Services
                 if (instance == null) instance = new ProductService();
                 return instance;
             }
-        }       
+        }
         private static ProductService instance { get; set; }
         private ProductService()
         {
@@ -49,7 +49,30 @@ namespace ClothKai.Services
                     .Take(pageSize)
                     .Include(x => x.Category)
                     .ToList();
-                }   
+                }
+            }
+        }
+        // Get Latest Products
+        public List<Product> GetLatestProducts(int numberOfProducts)
+        {
+            using (var context = new CBContext())
+            {
+                return context.Products.OrderByDescending(x => x.ID).Take(numberOfProducts).Include(x => x.Category).ToList();
+            }
+        }
+        public List<Product> GetProducts(int pageNo, int pageSize)
+        {
+            using (var context = new CBContext())
+            {
+                return context.Products.OrderByDescending(x => x.ID).Skip((pageNo - 1) * pageSize).Take(pageSize).Include(x => x.Category).ToList();
+            }
+        }
+        // Get Products by Category.
+        public List<Product> GetProductsByCategory(int CategoryID, int pageSize)
+        {
+            using (var context = new CBContext())
+            {
+                return context.Products.Where(x => x.CategoryID == CategoryID).OrderByDescending(x => x.ID).Take(pageSize).Include(x => x.Category).ToList();
             }
         }
         // Get Count Number Product
@@ -66,7 +89,7 @@ namespace ClothKai.Services
                 else
                 {
                     return context.Products.Count();
-                } 
+                }
             }
         }
         // Get List All Products
