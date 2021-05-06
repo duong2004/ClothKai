@@ -1,39 +1,47 @@
-﻿@model ClothKai.Entities.Category
+﻿@model ClothKai.Web.ViewModels.EditCategoryViewModel
 @{
     ViewBag.Title = "Edit";
-    var trueChecked = Model.isFeature ? "checked" : string.Empty;
-    var falseChecked = !Model.isFeature ? "checked" : string.Empty;
+    var trueChecked = Model.isFeatuer ? "checked" : string.Empty;
+    var falseChecked = !Model.isFeatuer ? "checked" : string.Empty;
+    var imageURL = "/Content/images/a183d876-619c-4ca9-a20c-bd19d0448e14.png";
+    var image = Model.ImageURL != null ? Model.ImageURL : imageURL;
 }
 <div class="container mt-2">
     <h2>Edit Category</h2>
-    <form method="post">
-        <input name="ID" type="hidden" value="@Model.ID" />
-        <div class="form-group">
-            <label>Name</label>
-            <input name="Name" value="@Model.Name" class="form-control" />
-        </div>
+    <form id="editCategory">
+        <div class="row">
+            <div class="col-md-8">
+                <input name="ID" type="hidden" value="@Model.ID" />
+                <div class="form-group">
+                    <label>Name</label>
+                    <input name="Name" value="@Model.Name" class="form-control" />
+                </div>
 
-        <div class="form-group">
-            <label>Description</label>
-            <input name="Description" value="@Model.Description" class="form-control" />
+                <div class="form-group">
+                    <label>Description</label>
+                    <input name="Description" value="@Model.Description" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Image</label>
+                    <input name="ImageURL" id="ImageURL" type="hidden" value="@Model.ImageURL" />
+                    <input id="imageUpload" name="Image" type="file" accept=".png, .jpg" />
+                </div>              
+                <div class="form-group">
+                    <label>Is Feature</label>
+                    <input name="isFeatuer" type="radio" value="True" @trueChecked /> True
+                    <input name="isFeatuer" type="radio" value="False" @falseChecked /> False
+                </div>
+                <div class="form-group">
+                    <button type="button" id="btnSave">Save</button>
+                    <button type="button" id="btnCancle">Cancle</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="thumb">
+                    <img id="categoryImage" class="img-thumbnail img-fluid" src="@image"/>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label>Image</label>
-            <input name="ImageURL" id="ImageURL" type="hidden" value="@Model.ImageURL" />
-            <input id="imageUpload" name="Image" type="file" accept=".png, .jpg" />
-        </div>
-        <div class="form-group">
-            <img id="categoryImage" src="@Model.ImageURL"  style="width:100px;height:90px;"/>
-        </div>
-        <div class="form-group">
-            <label>Is Feature</label>
-            <input name="isFeature" type="radio" value="True" @trueChecked/> True
-            <input name="isFeature" type="radio" value="False" @falseChecked/> False
-        </div>
-        <div class="form-group">
-            <button type="submit">Save</button>
-        </div>
-
     </form>
 </div>
 <script>
@@ -64,6 +72,25 @@
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Error");
             });
+    });
+    $("#btnSave").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Edit","Category")',
+            data: $("#editCategory").serialize()
+        })
+            .done(function (response) {
+                $('#tableCategory').html(response);
+                $('#actionContainer').html("");
+                focusActionCategory("tableCategory");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+    });
+    $("#btnCancle").click(function () {
+        $('#actionContainer').html("");
+        focusActionCategory("tableCategory");
     });
 </script>
 

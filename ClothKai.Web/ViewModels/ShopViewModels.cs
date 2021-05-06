@@ -18,5 +18,12 @@ namespace ClothKai.Web.ViewModels
         public List<Product> Products { get; set; }
         public int? sortBy { get; set; }
         public int? CategoryID { get; set; }
+        public string searchTerm { get; set; }
+        public Pager Pager { get; set; }
+    }
+    public class FilterProductsViewModel
+    {
+        public List<Product> Products { get; set; }
+        public Pager Pager { get; set; }
     }
 }

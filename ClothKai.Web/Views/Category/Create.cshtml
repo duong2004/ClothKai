@@ -1,37 +1,46 @@
-﻿
+﻿@model ClothKai.Web.ViewModels.NewCategoryViewModel
 @{
     ViewBag.Title = "Create";
+    var imageURL = "/Content/images/a183d876-619c-4ca9-a20c-bd19d0448e14.png";
 }
 <div class="container mt-2">
     <h2>Create Category</h2>
-    <form method="post">
-        <div class="form-group">
-            <label>Name</label>
-            <input name="Name" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label>Description</label>
-            <textarea name="Description" class="form-control"></textarea>
-        </div>
-        <div class="form-group">
-            <label>Image</label>
-            <input name="ImageURL" id="ImageURL" type="hidden" />
-            <input id="imageUpload" name="Image" type="file" accept=".png, .jpg" />
-        </div>
-        <div class="thumb mb-2">
-            <img id="categoryImage" />
-        </div>
-        <div class="form-group">
-            <label>Is Feature</label>
-            <input name="isFeature" type="radio" value="True"/> True
-            <input name="isFeature" type="radio" value="False"/> False
-        </div>
-        <div class="form-group">
-            <button type="submit">Save</button>
+    <form id="createCategory">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input name="Name" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="Description" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Image</label>
+                    <input name="ImageURL" id="ImageURL" type="hidden" />
+                    <input id="imageUpload" name="Image" type="file" accept=".png, .jpg" />
+                </div>
+                <div class="form-group">
+                    <label>Is Feature</label>
+                    <input name="isFeature" type="radio" value="True" /> True
+                    <input name="isFeature" type="radio" value="False" /> False
+                </div>
+                <div class="form-group">
+                    <button type="button" id="btnSave">Save</button>
+                    <button type="button" id="btnCancle">Cancle</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="thumb">
+                    <img class="img-thumbnail img-fluid" id="categoryImage" src="@imageURL" />
+                </div>
+            </div>
         </div>
     </form>
 </div>
 <script>
+
     $("#imageUpload").change(function () {
         var element = this;
         var formData = new FormData();
@@ -59,5 +68,24 @@
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("Error");
             });
+    });
+    $("#btnSave").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Create","Category")',
+            data: $("#createCategory").serialize()
+        })
+            .done(function (response) {
+                $('#tableCategory').html(response);
+                $('#actionContainer').html("");
+                focusActionCategory("tableCategory");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            });
+    });
+    $("#btnCancle").click(function () {
+        $('#actionContainer').html("");
+        focusActionCategory("tableCategory");
     });
 </script>

@@ -21,7 +21,7 @@ namespace ClothKai.Web.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("ClothKaiConnection", throwIfV1Schema: false)
         {
         }
 

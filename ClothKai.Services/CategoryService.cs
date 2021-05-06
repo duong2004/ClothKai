@@ -24,12 +24,39 @@ namespace ClothKai.Services
         {
         }
         #endregion
-        // Get All Category
         public List<Category> GetCategory()
         {
             using (var context = new CBContext())
             {
-                return context.Categories.ToList();
+                var category = context.Categories.ToList();
+                return category;
+            }
+        }
+        // Get All Category to s
+        public List<Category> GetCategoryToSearch(string s, int pageNo)
+        {
+            using (var context = new CBContext())
+            {
+                var pageSize = int.Parse(ConfigrutionService.Instance.GetConfig("PageSize").Value);
+                var category = context.Categories.ToList();
+                if (!string.IsNullOrEmpty(s))
+                {
+                    category = category.Where(x => x.Name.ToLower().Contains(s.ToLower())).ToList();
+                }
+                return category.Skip((pageNo - 1) * pageSize).Take(pageSize).ToList();
+            }
+        }
+        // Count Category to search
+        public int CountToCategory(string s)
+        {
+            using (var context = new CBContext())
+            {
+                var category = context.Categories.ToList();
+                if (!string.IsNullOrEmpty(s))
+                {
+                    category = category.Where(x => x.Name.ToLower().Contains(s.ToLower())).ToList();
+                }
+                return (int)(category.Count());
             }
         }
         // Get Feature Categories Home

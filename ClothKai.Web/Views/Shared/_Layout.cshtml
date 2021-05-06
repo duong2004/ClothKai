@@ -39,6 +39,7 @@
         <script src="~/Content/javascript/respond.min.js"></script>
     <![endif]-->
     <script src="~/Content/javascript/jquery.min.js"></script>
+    <script src="~/Content/javascript/jquery-ui.js"></script>
 </head>
 <body class="header_sticky header-style-2 has-menu-extra">
     <!-- Boxed -->
@@ -61,9 +62,12 @@
                                 <button type="submit" class="header-search-submit" title="Search">Search</button>
                             </form>
                         </li>
-                        <li class="box-login">
-                            <a class="icon_login" href="#"></a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="box-login">
+                                <a class="icon_login" href="#">@User.Identity.Name</a>
+                            </li>
+                        }
                         <li class="box-cart nav-top-cart-wrapper">
                             <a class="icon_cart nav-cart-trigger active" href="#"><span>3</span></a>
                             <div class="nav-shop-cart">
@@ -85,61 +89,61 @@
                                 <li>
                                     <a href="@Url.Action("Index","Home")">HOME</a>
                                     @*<ul class="submenu">
-                                        <li><a href="index.html">Homepage Style 1</a></li>
-                                        <li><a href="index-v2.html">Homepage Style 2</a></li>
-                                        <li><a href="index-v3.html">Homepage Style 3</a></li>
-                                        <li><a href="index-v4.html">Homepage Style 4</a></li>
-                                        <li><a href="index-v5.html">Homepage Style 5</a></li>
-                                        <li><a href="index-v6.html">Homepage Style 6</a></li>
-                                        <li><a href="index-v7.html">Homepage Style 7</a></li>
-                                        <li><a href="index-v8.html">Homepage Style 8</a></li>
-                                        <li><a href="index-v9.html">Homepage Style 9</a></li>
-                                        <li><a href="index-v10.html">Homepage Style 10</a></li>
-                                    </ul>*@
+                                            <li><a href="index.html">Homepage Style 1</a></li>
+                                            <li><a href="index-v2.html">Homepage Style 2</a></li>
+                                            <li><a href="index-v3.html">Homepage Style 3</a></li>
+                                            <li><a href="index-v4.html">Homepage Style 4</a></li>
+                                            <li><a href="index-v5.html">Homepage Style 5</a></li>
+                                            <li><a href="index-v6.html">Homepage Style 6</a></li>
+                                            <li><a href="index-v7.html">Homepage Style 7</a></li>
+                                            <li><a href="index-v8.html">Homepage Style 8</a></li>
+                                            <li><a href="index-v9.html">Homepage Style 9</a></li>
+                                            <li><a href="index-v10.html">Homepage Style 10</a></li>
+                                        </ul>*@
                                 </li>
                                 <li class="active">
                                     <a href="@Url.Action("Index","Product")">PRODUCTS</a>
                                     @*<ul class="submenu">
-                                        <li>
-                                            <a href="shop-3col.html">Shop Layouts</a>
-                                            <ul class="submenu">
-                                                <li class="active"><a href="shop-3col.html">Three Columns</a></li>
-                                                <li><a href="shop-4col.html">Four Columns</a></li>
-                                                <li><a href="shop-5col.html">Five Columns</a></li>
-                                                <li><a href="shop-3col-slide.html">Slidebar Three Columns</a></li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <a href="shop-detail-des.html">Shop Details</a>
-                                            <ul class="submenu">
-                                                <li><a href="shop-detail-des.html">Details Description</a></li>
-                                                <li><a href="shop-detail-exter.html">Details External</a></li>
-                                                <li><a href="shop-detail-option.html">Details Options</a></li>
-                                                <li><a href="shop-detail-fix.html">Details Fix</a></li>
-                                                <li><a href="shop-detail-zoom.html">Details Zoom</a></li>
-                                                <li><a href="shop-detail-group.html">Details Grouped</a></li>
-                                                <li><a href="shop-detail-video.html">Details Video</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>*@
+                                            <li>
+                                                <a href="shop-3col.html">Shop Layouts</a>
+                                                <ul class="submenu">
+                                                    <li class="active"><a href="shop-3col.html">Three Columns</a></li>
+                                                    <li><a href="shop-4col.html">Four Columns</a></li>
+                                                    <li><a href="shop-5col.html">Five Columns</a></li>
+                                                    <li><a href="shop-3col-slide.html">Slidebar Three Columns</a></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <a href="shop-detail-des.html">Shop Details</a>
+                                                <ul class="submenu">
+                                                    <li><a href="shop-detail-des.html">Details Description</a></li>
+                                                    <li><a href="shop-detail-exter.html">Details External</a></li>
+                                                    <li><a href="shop-detail-option.html">Details Options</a></li>
+                                                    <li><a href="shop-detail-fix.html">Details Fix</a></li>
+                                                    <li><a href="shop-detail-zoom.html">Details Zoom</a></li>
+                                                    <li><a href="shop-detail-group.html">Details Grouped</a></li>
+                                                    <li><a href="shop-detail-video.html">Details Video</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>*@
                                 </li>
                                 <li>
                                     <a href="@Url.Action("Index","Category")">CATEGORY</a>
                                     @*<ul class="submenu">
-                                        <li><a href="coming-soon.html">Coming Soon</a></li>
-                                        <li><a href="404.html"> Error 404</a></li>
-                                        <li><a href="faqs.html">FAQs</a></li>
-                                    </ul>*@
+                                            <li><a href="coming-soon.html">Coming Soon</a></li>
+                                            <li><a href="404.html"> Error 404</a></li>
+                                            <li><a href="faqs.html">FAQs</a></li>
+                                        </ul>*@
                                 </li>
                                 <li>
                                     <a href="@Url.Action("Index","Shop")">SHOP</a>
                                     <ul class="submenu">
                                         <li><a href="@Url.Action("Checkout","Shop")">CHECK OUT</a></li>
                                         @*<li><a href="blog-list-1.html">Blog list Slide 1</a></li>
-                                        <li><a href="blog-list-2.html">Blog list Slide 2</a></li>
-                                        <li><a href="blog-grid.html">Blog Gird Full</a></li>
-                                        <li><a href="blog-grid-1.html">Blog Gird Slide</a></li>
-                                        <li><a href="blog-detail.html">Blog Details</a></li>*@
+                                            <li><a href="blog-list-2.html">Blog list Slide 2</a></li>
+                                            <li><a href="blog-grid.html">Blog Gird Full</a></li>
+                                            <li><a href="blog-grid-1.html">Blog Gird Slide</a></li>
+                                            <li><a href="blog-detail.html">Blog Details</a></li>*@
                                     </ul><!-- /.submenu -->
                                 </li>
                                 <li>
@@ -271,7 +275,6 @@
     <script src="~/Content/javascript/equalize.min.js"></script>
     <script src="~/Content/javascript/gmap3.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIEU6OT3xqCksCetQeNLIPps6-AYrhq-s&region=GB"></script>
-    <script src="~/Content/javascript/jquery-ui.js"></script>
 
     <script src="~/Content/javascript/jquery.cookie.js"></script>
     <script src="~/Content/javascript/main.js"></script>

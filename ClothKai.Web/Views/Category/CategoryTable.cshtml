@@ -1,0 +1,205 @@
+﻿@model ClothKai.Web.ViewModels.CategorySearchViewModel
+
+<h2 class="mb-2">List of Category</h2>
+<div class="mb-2">
+    <form method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input name="s" id="s" placeholder="Search..." class="form-control" value="@Model.SearchTerm" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button type="button" id="btnSearch" class="col-12">Search</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" id="btnReset" class="col-12">Reset</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" id="btnNew" class="col-12">New</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<table id="CategoryTable" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Description</th>
+            <th>isFeature</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Categories != null && Model.Categories.Count > 0)
+        {
+            foreach (var item in Model.Categories)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td class="text-center"><img src="@item.ImageURL" alt="@item.Name" style="width:100px;height:90px;" /></td>
+                    <td>@item.Description</td>
+                    <td class="text-center">
+                        @if (item.isFeature == true)
+                        {
+                            <img src="~/Content/images/Dau.png" />
+                        }
+                        else
+                        {
+                            <img src="~/Content/images/Rot.png" />
+                        }
+                    </td>
+                    <td>
+                        <button type="button" class="btnEdit" data-id="@item.ID">Edit</button>
+                        <button type="button" class="btnDelete" data-id="@item.ID">Delete</button>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4" style="color:red">No data</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    @if (Model.Pager != null)
+    {
+        if (Model.Pager.CurrentPage > 1)
+        {
+            <button class="pagesButton" data-pageNo="1"><<</button>
+            <button class="pagesButton" data-pageNo="@(Model.Pager.CurrentPage - 1)"><</button>
+        }
+        for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+        {
+            var actived = Model.Pager.CurrentPage == page ? "active bg-info" : string.Empty;
+            <button class="@actived pagesButton" data-pageNo="@page">@page</button>
+        }
+        if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+        {
+            <button class="pagesButton" data-pageNo="@(Model.Pager.CurrentPage + 1)">></button>
+            <button class="pagesButton" data-pageNo="@Model.Pager.EndPage">>></button>
+        }
+    }
+</div>
+<script type="text/javascript">
+    $(".pagesButton").click(function () {
+        var s = $('#s').val();
+        $.ajax({
+            url: "@Url.Action("CategoryTable", "Category")",
+            data: {
+                s: s,
+                pageNo: $(this).attr("data-pageNo")
+            }
+        })
+            .done(function (response) {
+                $('#tableCategory').html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error");
+            });
+    });
+    $("#btnSearch").click(function () {
+        var value = $("#s").val();
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("CategoryTable", "Category")',
+            data: {
+                s: value
+            }
+        })
+            .done(function (response) {
+                $('#tableCategory').html(response);
+                focusActionCategory("tableCategory");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error");
+            });
+    });
+    $("#btnReset").click(function () {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("CategoryTable", "Category")',
+            data: {
+                s: ""
+            }
+        })
+            .done(function (response) {
+                $('#tableCategory').html(response);
+                focusActionCategory("tableCategory");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error");
+            });
+    });
+    $("#btnNew").click(function () {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("Create","Category")"
+        })
+            .done(function (response) {
+                $('#actionContainer').html(response);
+                focusActionCategory("actionContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error");
+            });
+    });
+    $(".btnEdit").click(function () {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("Edit","Category")",
+            data: {
+                ID: $(this).attr("data-id")
+            }
+        })
+            .done(function (response) {
+                $('#actionContainer').html(response);
+                focusActionCategory("actionContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error");
+            });
+    });
+    $(".btnDelete").click(function () {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Delete","Category")',
+                    data: {
+                        ID: $(this).attr("data-id")
+                    }
+                })
+                    .done(function (response) {
+                        $('#tableCategory').html(response);
+                })
+                    .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("Error");
+                    });
+            }
+        })
+    });
+</script>
