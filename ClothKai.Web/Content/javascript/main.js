@@ -834,3 +834,14 @@
       flatContentBox();
    	});
 })(jQuery);
+
+function hideLoader() {
+    $(".loader").hide();
+    $("#loading-overlay").hide();
+}
+
+function showLoader() {
+    $(".loader").show();
+    $("#loading-overlay").show();
+}
+

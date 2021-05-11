@@ -6,11 +6,37 @@ using System.Web;
 using System.Web.Mvc;
 using ClothKai.Web.ViewModels;
 using ClothKai.Web.Code;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 
 namespace ClothKai.Web.Controllers
 {
     public class ShopController : Controller
     {
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
         public ActionResult Index(string searchTerm, int? minnimumPrice, int? maxnimumPrice, int? categoryID, int? sortBy, int? pageNo)
         {
             pageNo = pageNo.HasValue ? pageNo.Value > 0 ? pageNo.Value : 1 : 1;
@@ -34,6 +60,9 @@ namespace ClothKai.Web.Controllers
             var totalProducts = ProductService.Instance.SearchProductsCount(searchTerm, minnimumPrice, maxnimumPrice, categoryID, sortBy);
             int pageSize = int.Parse(ConfigrutionService.Instance.GetConfig("ShopPageSize").Value);
             model.Pager = new Pager(totalProducts, pageNo, pageSize);
+            model.CategoryID = categoryID;
+            model.searchTerm = searchTerm;
+            model.sortBy = sortBy;
             return PartialView(model);
         }
         // GET: Shop
@@ -49,6 +78,7 @@ namespace ClothKai.Web.Controllers
                 //List<int> pIDs = ids.Select(x => int.Parse(x)).ToList();
                 model.ProductIDs = CartProductsCookie.Value.Split('-').Select(x => int.Parse(x)).ToList();
                 model.CartProducts = ProductService.Instance.GetProducts(model.ProductIDs);
+                model.User = UserManager.FindById(User.Identity.GetUserId());
             }
             return View(model);
         }

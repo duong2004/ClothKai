@@ -35,14 +35,6 @@
                         <form role="search" method="get" class="search-form" action="@Url.Action("Index", "Shop")">
                             <label>
                                 <input type="search" class="search-field" placeholder="Search" value="@Model.searchTerm" name="searchTerm">
-                                @if (Model.CategoryID != null)
-                                {
-                                    <input name="categoryID" value="@Model.CategoryID" type="hidden" />
-                                }
-                                @if (Model.sortBy != null)
-                                {
-                                    <input name="sortBy" value="@Model.sortBy" type="hidden" />
-                                }
                             </label>
                             <input type="submit" class="search-submit" value="Search">
                         </form>
@@ -52,20 +44,11 @@
                             Sort By
                         </h5>
                         <ul>
-                            <li><a href="@Url.Action("Index", "Shop", new { searchTerm = Model.searchTerm, categoryID = Model.CategoryID, sortBy = (int)SortByEnums.Defaut })" class="@(Model.sortBy.HasValue ? Model.sortBy.Value == (int)SortByEnums.Defaut ? "active" : string.Empty : string.Empty)">Default</a></li>
-                            <li><a href="@Url.Action("Index", "Shop", new { searchTerm = Model.searchTerm, categoryID = Model.CategoryID, sortBy = (int)SortByEnums.Popularity })" class="@(Model.sortBy.HasValue ? Model.sortBy.Value == (int)SortByEnums.Popularity ? "active" : string.Empty : string.Empty)">Popularity</a></li>
-                            <li><a href="@Url.Action("Index", "Shop", new { searchTerm = Model.searchTerm, categoryID = Model.CategoryID, sortBy = (int)SortByEnums.PriceLowToHigh })" class="@(Model.sortBy.HasValue ? Model.sortBy.Value == (int)SortByEnums.PriceLowToHigh ? "active" : string.Empty : string.Empty)">Price: low to high</a></li>
-                            <li><a href="@Url.Action("Index", "Shop", new { searchTerm = Model.searchTerm, categoryID = Model.CategoryID, sortBy = (int)SortByEnums.PriceHighToLow })" class="@(Model.sortBy.HasValue ? Model.sortBy.Value == (int)SortByEnums.PriceHighToLow ? "active" : string.Empty : string.Empty)">Price: high to low</a></li>
+                            <li><a href="#" data-href="@Url.Action("FilterProducts", "Shop", new { searchTerm = Model.searchTerm, categoryID = Model.CategoryID, sortBy = (int)SortByEnums.Defaut })" class="dataLink @(Model.sortBy.HasValue ? Model.sortBy.Value == (int)SortByEnums.Defaut ? "active" : string.Empty : string.Empty)">Default</a></li>
+                            <li><a href="#" data-href="@Url.Action("FilterProducts", "Shop", new { searchTerm = Model.searchTerm, categoryID = Model.CategoryID, sortBy = (int)SortByEnums.Popularity })" class="dataLink @(Model.sortBy.HasValue ? Model.sortBy.Value == (int)SortByEnums.Popularity ? "active" : string.Empty : string.Empty)">Popularity</a></li>
+                            <li><a href="#" data-href="@Url.Action("FilterProducts", "Shop", new { searchTerm = Model.searchTerm, categoryID = Model.CategoryID, sortBy = (int)SortByEnums.PriceLowToHigh })" class="dataLink @(Model.sortBy.HasValue ? Model.sortBy.Value == (int)SortByEnums.PriceLowToHigh ? "active" : string.Empty : string.Empty)">Price: low to high</a></li>
+                            <li><a href="#" data-href="@Url.Action("FilterProducts", "Shop", new { searchTerm = Model.searchTerm, categoryID = Model.CategoryID, sortBy = (int)SortByEnums.PriceHighToLow })" class="dataLink @(Model.sortBy.HasValue ? Model.sortBy.Value == (int)SortByEnums.PriceHighToLow ? "active" : string.Empty : string.Empty)">Price: high to low</a></li>
                         </ul>
-                    </div>
-                    <div class="widget widget-price">
-                        <h5 class="widget-title">Filter by price</h5>
-                        <div class="price-filter">
-                            <div id="slide-range"></div>
-                            <p class="amount">
-                                Price: <input type="text" id="amount" disabled="">
-                            </p>
-                        </div>
                     </div>
                     <div class="widget widget_tag">
                         <h5 class="widget-title">
@@ -75,10 +58,20 @@
                             <a href="#">All products</a>
                             @foreach (var categories in Model.Categories)
                             {
-                                <a href="@Url.Action("Index", "Shop", new { searchTerm = Model.searchTerm, categoryID = categories.ID, sortBy = Model.sortBy })" class="@(Model.CategoryID.HasValue ? Model.CategoryID.Value == categories.ID ? "active" : string.Empty : string.Empty )">@categories.Name</a>
+                                <a href="#" data-href="@Url.Action("FilterProducts", "Shop", new { searchTerm = Model.searchTerm, categoryID = categories.ID, sortBy = Model.sortBy })" class="dataLink @(Model.CategoryID.HasValue ? Model.CategoryID.Value == categories.ID ? "active" : string.Empty : string.Empty )">@categories.Name</a>
                             }
                         </div>
                     </div><!-- /.widget -->
+                    <div class="widget widget-price">
+                        <h5 class="widget-title">Filter by price</h5>
+                        <div class="price-filter">
+                            <div id="slide-range"></div>
+                            <p class="amount">
+                                Price: <input type="text" id="amount" disabled="">
+                            </p>
+                        </div>
+                    </div>
+                    <a class="btn btn-danger" href="@Url.Action("Index","Shop")">Reset</a>
                 </div><!-- /.sidebar -->
             </div><!-- /.col-md-3 -->
             <div class="col-md-9">
@@ -86,6 +79,9 @@
                     @{
                         filterProductsViewModel.Products = Model.Products;
                         filterProductsViewModel.Pager = Model.Pager;
+                        filterProductsViewModel.searchTerm = Model.searchTerm;
+                        filterProductsViewModel.CategoryID = Model.CategoryID;
+                        filterProductsViewModel.sortBy = Model.sortBy;
                         Html.RenderPartial("FilterProducts", filterProductsViewModel);
                     }
                 </div>
@@ -109,16 +105,42 @@
             callTimeout = setTimeout(getData,500);
         }
     });
+
+    $(".dataLink").click(function () {
+        debugger;
+        var url = $(this).attr("data-href");
+        if (url != null || url != undefined) {
+            getDataLink(url);
+        }
+    });
+
+    function getDataLink(dUrl) {
+        console.log("GetData Call  0");
+        $.ajax({
+            url: dUrl,
+            data: {
+                minnimumPrice: flatPrice.slider("values", 0),
+                maxnimumPrice: flatPrice.slider("values", 1)
+            }
+        })
+            .done(function (response) {
+                $('#productsDiv').html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error");
+            });
+    }
+
     function getData() {
-        console.log("GetData Call");
+        console.log("GetData Call 1");
         $.ajax({
             url: '@Url.Action("FilterProducts", "Shop")',
             data: {
-                searchTerm: '@Model.searchTerm',
-                categoryID: '@Model.CategoryID',
-                sortBy: '@Model.sortBy',
+                searchTerm: $("#searchTerm").val(),
+                categoryID: $("#categoryID").val(),
+                sortBy: $("#sortBy").val(),
                 minnimumPrice: flatPrice.slider("values", 0),
-                maxnimumPrice: flatPrice.slider("values", 1)   
+                maxnimumPrice: flatPrice.slider("values", 1)
             }
         })
             .done(function (response) {

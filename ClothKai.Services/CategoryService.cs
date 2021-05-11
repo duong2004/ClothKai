@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace ClothKai.Services
 {
@@ -38,12 +39,22 @@ namespace ClothKai.Services
             using (var context = new CBContext())
             {
                 var pageSize = int.Parse(ConfigrutionService.Instance.GetConfig("PageSize").Value);
-                var category = context.Categories.ToList();
                 if (!string.IsNullOrEmpty(s))
                 {
-                    category = category.Where(x => x.Name.ToLower().Contains(s.ToLower())).ToList();
+                    return context.Categories
+                        .Where(x => x.Name.ToLower().Contains(s.ToLower()))
+                        .OrderByDescending(x => x.ID)
+                        .Skip((pageNo - 1) * pageSize)
+                        .Take(pageSize)
+                        .Include(x => x.Products)
+                        .ToList();
                 }
-                return category.Skip((pageNo - 1) * pageSize).Take(pageSize).ToList();
+                return context.Categories
+                    .OrderByDescending(x => x.ID)
+                    .Skip((pageNo - 1)*pageSize)
+                    .Take(pageSize)
+                    .Include(x => x.Products)
+                    .ToList();
             }
         }
         // Count Category to search
@@ -98,7 +109,11 @@ namespace ClothKai.Services
         {
             using (var context = new CBContext())
             {
-                var Category = context.Categories.Find(category.ID);
+                var Category = context.Categories
+                    .Where(x=>x.ID == category.ID)
+                    .Include(x=>x.Products)
+                    .FirstOrDefault();
+                context.Products.RemoveRange(Category.Products);
                 context.Categories.Remove(Category);
                 context.SaveChanges();
             }

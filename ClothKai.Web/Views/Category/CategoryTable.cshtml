@@ -32,7 +32,7 @@
         <tr>
             <th>Name</th>
             <th>Image</th>
-            <th>Description</th>
+            <th>Player</th>
             <th>isFeature</th>
             <th>Action</th>
         </tr>
@@ -45,7 +45,7 @@
                 <tr>
                     <td>@item.Name</td>
                     <td class="text-center"><img src="@item.ImageURL" alt="@item.Name" style="width:100px;height:90px;" /></td>
-                    <td>@item.Description</td>
+                    <td class="text-lg-center">@item.Products.Count</td>
                     <td class="text-center">
                         @if (item.isFeature == true)
                         {

@@ -179,6 +179,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105021719362_InitialCreate.cs" />
+    <Compile Include="Migrations\202105021719362_InitialCreate.Designer.cs">
+      <DependentUpon>202105021719362_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105110749316_addNewPropertiesToUser.cs" />
+    <Compile Include="Migrations\202105110749316_addNewPropertiesToUser.Designer.cs">
+      <DependentUpon>202105110749316_addNewPropertiesToUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -434,6 +443,7 @@
     <Content Include="Content\javascript\rev-slider.js" />
     <Content Include="Content\javascript\switcher.js" />
     <Content Include="Content\javascript\tether.min.js" />
+    <Content Include="Content\javascript\updateCartProducts.js" />
     <Content Include="Content\rev-slider\assets\coloredbg.png" />
     <Content Include="Content\rev-slider\assets\gridtile.png" />
     <Content Include="Content\rev-slider\assets\gridtile_3x3.png" />
@@ -569,6 +579,14 @@
       <Project>{46c9eeb1-8501-4888-bb33-e77c72d2a4a7}</Project>
       <Name>ClothKai.Services</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202105021719362_InitialCreate.resx">
+      <DependentUpon>202105021719362_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105110749316_addNewPropertiesToUser.resx">
+      <DependentUpon>202105110749316_addNewPropertiesToUser.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
