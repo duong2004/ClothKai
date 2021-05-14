@@ -79,6 +79,14 @@
     <Compile Include="Migrations\202104260543101_addProductValidation.Designer.cs">
       <DependentUpon>202104260543101_addProductValidation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105140512378_AddedOrderandOrderItem.cs" />
+    <Compile Include="Migrations\202105140512378_AddedOrderandOrderItem.Designer.cs">
+      <DependentUpon>202105140512378_AddedOrderandOrderItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105140712387_AddQuantityinOrderItem.cs" />
+    <Compile Include="Migrations\202105140712387_AddQuantityinOrderItem.Designer.cs">
+      <DependentUpon>202105140712387_AddQuantityinOrderItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -113,6 +121,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202104260543101_addProductValidation.resx">
       <DependentUpon>202104260543101_addProductValidation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105140512378_AddedOrderandOrderItem.resx">
+      <DependentUpon>202105140512378_AddedOrderandOrderItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105140712387_AddQuantityinOrderItem.resx">
+      <DependentUpon>202105140712387_AddQuantityinOrderItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

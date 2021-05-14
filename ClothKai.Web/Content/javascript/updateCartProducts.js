@@ -4,7 +4,7 @@
 function updateCartProducts() {
     var cartProducts;
     var existingCookieData = $.cookie('CartProducts');
-    if (existingCookieData != undefined || existingCookieData != "" || existingCookieData != null) {
+    if (existingCookieData != undefined && existingCookieData != "" && existingCookieData != null) {
         cartProducts = existingCookieData.split('-');
     } else {
         cartProducts = [];

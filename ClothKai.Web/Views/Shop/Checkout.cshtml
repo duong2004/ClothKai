@@ -17,7 +17,7 @@
                     @foreach (var product in Model.CartProducts)
                     {
                         var productQuantity = Model.ProductIDs.Where(x => x == product.ID).Count();
-                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <li class="list-group-item d-flex justify-content-between lh-condensed" data-id="@product.ID">
                             <div>
                                 <h6 class="my-0">@i. @product.Name <span class="badge badge-info">@productQuantity</span></h6>
                                 <small class="text-muted">@(product.Description.Length > 30 ? product.Description.Substring(0,29) + "..." : product.Description)</small>
@@ -61,11 +61,41 @@
                         <input type="text" class="form-control" id="address" placeholder="1234 Main St" required="" value="@Model.User.Address">
                     </div>
                     <hr class="mb-4">
-                    <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+                    <button id="placeOrderbtn" class="btn btn-primary btn-lg btn-block" type="button">Place Order</button>
                 </form>
             </div>
         </div>
     </div>
+    <script>
+    $("#placeOrderbtn").click(function () {
+        $.ajax({
+            url: "@Url.Action("PlaceOrder","Shop")",
+            data: {
+                productIDs: "@string.Join("-",Model.ProductIDs)"
+            }
+        })
+            .done(function (response) {
+                if (response.Success) {
+                    $.cookie('CartProducts','', { expires: 10,path: '/' });
+                    updateCartProducts();
+                    Swal.fire('Place Order is success')
+                        .then((value) => {
+                            window.location = '@Url.Action("Index","Shop")';
+                        });;
+                }
+                else {
+                    Swal.fire(
+                        'The Internet?',
+                        'That thing is still around?',
+                        'warning'
+                    )
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error");
+            });
+    });
+    </script>
 }
 else
 {

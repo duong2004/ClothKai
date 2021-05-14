@@ -8,6 +8,7 @@ using ClothKai.Web.ViewModels;
 using ClothKai.Web.Code;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
+using ClothKai.Entities;
 
 namespace ClothKai.Web.Controllers
 {
@@ -71,7 +72,7 @@ namespace ClothKai.Web.Controllers
         {
             CheckoutViewModel model = new CheckoutViewModel();
             var CartProductsCookie = Request.Cookies["CartProducts"];
-            if (CartProductsCookie != null)
+            if (CartProductsCookie != null && !string.IsNullOrEmpty(CartProductsCookie.Value))
             {
                 //var productsID = CartProductsCookie.Value;
                 //var ids = productsID.Split('-');
@@ -81,6 +82,31 @@ namespace ClothKai.Web.Controllers
                 model.User = UserManager.FindById(User.Identity.GetUserId());
             }
             return View(model);
+        }
+        public JsonResult PlaceOrder(string productIDs)
+        {
+            JsonResult result = new JsonResult();
+            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            if (!string.IsNullOrEmpty(productIDs))
+            {
+                var productQuantitys = productIDs.Split('-').Select(x => int.Parse(x)).ToList();
+                var pIDs = productIDs.Split(new char[] { '-' }).Select(x => int.Parse(x)).Distinct().ToList();
+                var boughtProducts = ProductService.Instance.GetProducts(pIDs);
+                Order newOrder = new Order();
+                newOrder.UserID = User.Identity.GetUserId();
+                newOrder.OrderedAt = DateTime.Now;
+                newOrder.Status = "Pending";
+                newOrder.TotalAmout = boughtProducts.Sum(x => x.Price * productQuantitys.Where(product => product == x.ID).Count());
+                newOrder.OrderItems = new List<OrderItem>();
+                newOrder.OrderItems.AddRange(boughtProducts.Select(x => new OrderItem() { ProductID = x.ID, Quantity = productQuantitys.Where(product => product == x.ID).Count() }));
+                var rowEffected = ShopService.Instance.SaveOrder(newOrder);
+                result.Data = new { Success = true,Rows = rowEffected };
+            }
+            else
+            {
+                result.Data = new { Success = false };
+            }
+            return result;
         }
     }
 }
